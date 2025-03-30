@@ -2,6 +2,252 @@
 layout: default
 ---
 
+<style>
+/* 页面容器样式 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 文章样式 */
+.post {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.entry {
+    width: 100%;
+}
+
+/* 代码块样式 */
+pre {
+    position: relative;
+    margin: 1em 0;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+pre code {
+    margin: 0;
+    padding: 1em;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 复制按钮样式 */
+.copy-button {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    padding: 4px 8px;
+    background-color: #4a4a4a;
+    color: #abb2bf;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    z-index: 1;
+}
+
+.copy-button:hover {
+    background-color: #666;
+}
+
+/* 返回按钮样式 */
+.back-button {
+    margin: 20px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* 适配移动设备 */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    pre {
+        margin: 1em -15px;
+        border-radius: 0;
+    }
+    
+    code {
+        font-size: 12px;
+    }
+}
+
+/* Prism.js 自定义样式 */
+pre[class*="language-"] {
+    background: #1e2127 !important;  /* 稍深的背景色 */
+    border: 1px solid #282c34;  /* 添加边框 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);  /* 添加阴影效果 */
+    border-radius: 6px;
+    margin: 1em 0;
+    padding: 1em 0;  /* 修改padding，去掉左右内边距 */
+    overflow: auto;
+}
+
+code[class*="language-"] {
+    color: #abb2bf !important;  /* 默认文本颜色 */
+    text-shadow: none !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 0 1em;  /* 添加左右内边距 */
+}
+
+/* 行号样式 */
+.line-numbers {
+    padding-left: 3.8em !important;  /* 强制使用固定的左内边距 */
+    counter-reset: linenumber;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 1em;  /* 添加顶部偏移，与代码对齐 */
+    font-size: 100%;
+    left: 0;  /* 修改左侧位置 */
+    width: 3em;
+    letter-spacing: -1px;
+    border-right: 1px solid #3a3f4b;  /* 更深的分隔线 */
+    user-select: none;
+    padding: 0;  /* 移除内边距 */
+}
+
+.line-numbers .line-numbers-rows > span {
+    pointer-events: none;
+    display: block;
+    counter-increment: linenumber;
+    line-height: 1.5;  /* 添加行高，与代码对齐 */
+    padding: 0;  /* 移除内边距 */
+}
+
+.line-numbers .line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #5c6370;  /* 更亮的行号颜色 */
+    display: block;
+    padding-right: 1em;
+    text-align: right;
+}
+
+/* 代码高亮颜色 - 增强版 */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #7c8a9b !important;  /* 更亮的注释颜色 */
+    font-style: italic;  /* 斜体注释 */
+}
+
+.token.punctuation {
+    color: #bfc7d5 !important;  /* 更亮的标点符号 */
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #ff6b6b !important;  /* 鲜艳的红色 */
+}
+
+.token.boolean,
+.token.number {
+    color: #ff9f43 !important;  /* 橙色 */
+}
+
+.token.selector,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #2ecc71 !important;  /* 翠绿色 */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #56b6c2 !important;  /* 青色 */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #c678dd !important;  /* 紫色 */
+    font-style: italic;  /* 斜体关键字 */
+}
+
+.token.function {
+    color: #4bcffa !important;  /* 亮蓝色 */
+}
+
+.token.class-name {
+    color: #ffd32a !important;  /* 金黄色 */
+}
+
+.token.variable {
+    color: #ff7979 !important;  /* 浅红色 */
+}
+
+.token.regex,
+.token.important {
+    color: #ffa502 !important;  /* 暗金色 */
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+/* 特殊语言的特定样式 */
+.language-json .token.property {
+    color: #56b6c2 !important;  /* JSON属性使用青色 */
+}
+
+.language-markdown .token.title {
+    color: #ff6b6b !important;  /* Markdown标题使用红色 */
+    font-weight: bold;
+}
+
+.language-markdown .token.list {
+    color: #4bcffa !important;  /* Markdown列表使用蓝色 */
+}
+</style>
+
 <div class="back-button">
   <a href="javascript:history.back()" class="btn">← 返回</a>
 </div>
@@ -14,7 +260,7 @@ layout: default
   </div>
 
   <div class="date">
-    发布于 {{ page.date | date: "%Y年%m月%d日" }}
+    发布于 {{ page.date | date: "%Y-%m-%d" }}
   </div>
 </article>
 
@@ -22,22 +268,71 @@ layout: default
   <a href="javascript:history.back()" class="btn">← 返回</a>
 </div>
 
-<style>
-.back-button {
-  margin-bottom: 20px;
-}
+<!-- Prism.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
 
-.btn {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
+<!-- Prism.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="/assets/js/prism.js"></script>
 
-.btn:hover {
-  background-color: #e0e0e0;
-}
-</style> 
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    // 调试信息
+    console.log('Prism.js 版本:', Prism.version);
+    console.log('行号插件状态:', Prism.plugins.lineNumbers);
+    
+    // 检查代码块
+    const codeBlocks = document.querySelectorAll('pre code');
+    console.log('找到代码块数量:', codeBlocks.length);
+    
+    // 手动添加行号类
+    codeBlocks.forEach((block) => {
+        const pre = block.parentElement;
+        if (!pre.classList.contains('line-numbers')) {
+            pre.classList.add('line-numbers');
+        }
+    });
+    
+    codeBlocks.forEach((block, index) => {
+        console.log(`代码块 ${index + 1}:`, {
+            '类名': block.className,
+            '父元素类名': block.parentElement.className,
+            '是否有行号类': block.parentElement.classList.contains('line-numbers')
+        });
+    });
+
+    // 初始化代码高亮
+    Prism.highlightAll();
+    
+    // 再次检查代码块
+    console.log('高亮后的代码块:', document.querySelectorAll('pre code'));
+    
+    // 添加复制按钮
+    document.querySelectorAll('pre').forEach((el) => {
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.textContent = '复制';
+        copyButton.onclick = () => {
+            const code = el.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                copyButton.textContent = '已复制!';
+                setTimeout(() => {
+                    copyButton.textContent = '复制';
+                }, 2000);
+            });
+        };
+        el.appendChild(copyButton);
+    });
+});
+</script> 
