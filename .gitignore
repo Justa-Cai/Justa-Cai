@@ -1,0 +1,32 @@
+# Jekyll 构建输出
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Ruby 相关
+.bundle/
+vendor/
+.ruby-version
+.ruby-gemset
+
+# 注意：Gemfile 和 Gemfile.lock 应该被提交到版本控制中
+# 不要忽略这两个文件，它们对于确保依赖版本一致性很重要
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 环境文件
+.env
+.env.*
+
+# 日志文件
+*.log 
