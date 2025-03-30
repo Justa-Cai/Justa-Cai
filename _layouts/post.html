@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<div class="back-button">
+  <a href="javascript:history.back()" class="btn">← 返回</a>
+</div>
+
+<article class="post">
+  <h1>{{ page.title }}</h1>
+
+  <div class="entry">
+    {{ content }}
+  </div>
+
+  <div class="date">
+    发布于 {{ page.date | date: "%Y年%m月%d日" }}
+  </div>
+</article>
+
+<div class="back-button" style="text-align: center; margin-top: 30px;">
+  <a href="javascript:history.back()" class="btn">← 返回</a>
+</div>
+
+<style>
+.back-button {
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #e0e0e0;
+}
+</style> 
