@@ -34,14 +34,16 @@ pre {
     margin: 1em 0;
     border-radius: 4px;
     overflow-x: auto;
+    background: #282a36;  /* Dracula背景色 */
 }
 
 pre code {
     margin: 0;
     padding: 1em;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     font-size: 14px;
     line-height: 1.5;
+    color: #f8f8f2;  /* Dracula文本色 */
 }
 
 /* 复制按钮样式 */
@@ -50,18 +52,18 @@ pre code {
     top: 0.5em;
     right: 0.5em;
     padding: 4px 8px;
-    background-color: #4a4a4a;
-    color: #abb2bf;
+    background-color: #44475a;
+    color: #f8f8f2;
     font-size: 12px;
     cursor: pointer;
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s;
-    z-index: 1;
+    z-index: 10;
 }
 
 .copy-button:hover {
-    background-color: #666;
+    background-color: #6272a4;
 }
 
 /* 返回按钮样式 */
@@ -98,6 +100,14 @@ pre code {
         font-size: 12px;
     }
 }
+
+/* 行号样式 - 不要直接修改此处，使用后面的样式覆盖 */
+pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+    white-space: pre;
+}
 </style>
 
 <div class="back-button">
@@ -119,9 +129,154 @@ pre code {
 </div>
 
 <!-- Prism.js CSS -->
-<!-- 使用CDN加载Prism样式 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
+<!-- 添加自定义样式来覆盖CDN样式 -->
+<style>
+/* Dracula Theme */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
+    background: #282a36;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #282a36;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #6272a4;
+}
+
+.token.punctuation {
+    color: #f8f8f2;
+}
+
+.token.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #ff79c6;
+}
+
+.token.boolean,
+.token.number {
+    color: #bd93f9;
+}
+
+.token.selector,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #50fa7b;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #ff79c6;
+}
+
+.token.function,
+.token.class-name {
+    color: #8be9fd;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #f1fa8c;
+}
+
+/* 行号样式修复 */
+pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+    white-space: pre;
+}
+
+pre.line-numbers > code {
+    white-space: inherit;
+    position: relative;
+    z-index: 1;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: -3.8em;
+    width: 3em;
+    font-size: 100%;
+    letter-spacing: -1px;
+    border-right: 1px solid #44475a;
+    user-select: none;
+    height: 100%;
+    z-index: 0;
+}
+
+.line-numbers-rows > span {
+    pointer-events: none;
+    display: block;
+    counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #6272a4;
+    display: block;
+    padding-right: 0.8em;
+    text-align: right;
+}
+
+/* 确保每个token正确处理 */
+.token {
+    background: transparent !important;
+}
+</style>
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -146,7 +301,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // 确保每个pre标签都有一个class属性来识别语言
         const code = pre.querySelector('code');
         if (code && code.className.indexOf('language-') === -1) {
-            code.className = 'language-none ' + code.className;
+            const langMatch = code.className.match(/language-(\w+)/);
+            if (langMatch) {
+                code.className = langMatch[0] + ' ' + code.className;
+            } else {
+                code.className = 'language-none ' + code.className;
+            }
         }
     });
     
@@ -169,5 +329,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             el.appendChild(copyButton);
         }
     });
+    
+    // 重新初始化Prism
+    if (typeof Prism !== 'undefined') {
+        setTimeout(() => {
+            Prism.highlightAll();
+        }, 100);
+    }
 });
 </script> 
