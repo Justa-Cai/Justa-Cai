@@ -236,53 +236,27 @@ pre[class*="language-"] {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+<!-- 加载行号插件 -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
 
-<!-- 确保完全禁用行号插件 -->
-<script>
-// 阻止line-numbers插件运行
-Prism.plugins.lineNumbers = {
-  getLine: function() { return null; },
-  resize: function() {},
-  assumeViewportIndependence: false
-};
+<!-- 启用行号功能的样式 -->
+<style>
+.line-numbers .line-numbers-rows {
+  border-right: 2px solid #6272a4 !important;
+  padding-right: 5px;
+}
 
-// 移除可能已经添加的行号相关class
-document.addEventListener('DOMContentLoaded', function() {
-  // 移除所有line-numbers class
-  document.querySelectorAll('.line-numbers').forEach(function(element) {
-    element.classList.remove('line-numbers');
-  });
-  
-  // 移除所有line-numbers-rows元素
-  document.querySelectorAll('.line-numbers-rows').forEach(function(element) {
-    element.remove();
-  });
-  
-  // 处理动态添加的元素
-  const observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      mutation.addedNodes.forEach(function(node) {
-        if (node.nodeType === 1) { // 元素节点
-          // 移除新添加元素中的line-numbers
-          if (node.classList && node.classList.contains('line-numbers')) {
-            node.classList.remove('line-numbers');
-          }
-          
-          // 移除新添加元素中的line-numbers-rows
-          if (node.querySelector) {
-            node.querySelectorAll('.line-numbers-rows').forEach(function(el) {
-              el.remove();
-            });
-          }
-        }
-      });
-    });
-  });
-  
-  // 观察文档变化
-  observer.observe(document.body, { childList: true, subtree: true });
-});
-</script>
+.line-numbers-rows > span:before {
+  color: #909090 !important;
+}
+
+pre[class*="language-"].line-numbers {
+  position: relative;
+  padding-left: 3.8em;
+  counter-reset: linenumber;
+}
+</style>
 
 <!-- 自定义Prism语法定义，禁用数字token -->
 <script>
@@ -335,6 +309,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return line.replace(/^\s*\d+\s+/, '');
             });
             codeElement.textContent = cleanLines.join('\n');
+        }
+        
+        // 为代码块的pre父元素添加line-numbers类
+        var preElement = codeElement.parentElement;
+        if (preElement && preElement.tagName === 'PRE') {
+            preElement.classList.add('line-numbers');
         }
     });
     

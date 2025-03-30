@@ -7,12 +7,15 @@ theme: jekyll-theme-minimal
 markdown: kramdown
 kramdown:
   input: GFM
-  syntax_highlighter: prismjs
+  auto_ids: true
+  syntax_highlighter: rouge
   syntax_highlighter_opts:
-    block:
+    line_numbers: true
+    span:
       line_numbers: false
-      wrap: true
-      inline: false
+    block:
+      line_numbers: true
+      start_line: 1
 
 # 构建配置
 permalink: /:categories/:title/
