@@ -272,27 +272,23 @@ pre.line-numbers > code {
     text-align: right;
 }
 
-/* 处理被识别为行号的数字token */
-.token.number.line-number-token {
+/* 隐藏行首可能的数字 */
+.token.number:first-child,
+.token.number:nth-child(1),
+.token.number:nth-child(2) {
     display: none !important;
+}
+
+/* 确保行号和代码对齐 */
+.line-numbers-rows {
+    padding-top: 1em !important;
 }
 </style>
 
 <!-- Prism.js JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-
 <script>
-// 直接处理代码内容，移除可能的行号
-document.addEventListener('DOMContentLoaded', function() {
+// 在加载Prism.js之前先处理代码
+window.addEventListener('load', function() {
     // 处理所有代码块
     document.querySelectorAll('pre code').forEach(function(codeEl) {
         // 获取代码内容
@@ -339,14 +335,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // 在内容处理完后，重新初始化Prism
-    setTimeout(function() {
-        Prism.highlightAll();
-    }, 100);
-    
     // 添加复制按钮
     document.querySelectorAll('pre').forEach((el) => {
-        // 确保每个pre元素只有一个复制按钮
         if (!el.querySelector('.copy-button')) {
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-button';
@@ -362,6 +352,41 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             el.appendChild(copyButton);
         }
+    });
+    
+    // 加载Prism.js脚本
+    function loadScript(url, callback) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.onload = callback;
+        document.body.appendChild(script);
+    }
+    
+    // 按顺序加载所有Prism脚本
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js', function() {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js', function() {
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js', function() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js', function() {
+                    loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js', function() {
+                        loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js', function() {
+                            loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js', function() {
+                                loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js', function() {
+                                    loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js', function() {
+                                        loadScript('https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js', function() {
+                                            // 所有脚本加载完成，初始化
+                                            if (typeof Prism !== 'undefined') {
+                                                Prism.highlightAll();
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
     });
 });
 </script> 
