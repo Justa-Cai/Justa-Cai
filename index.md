@@ -57,6 +57,7 @@ title: 首页
   <div class="card">
     <h3>Ubuntu 使用技巧</h3>
     <ul class="post-list">
+      <li><a href="/posts/ubuntu/practical-problems">Ubuntu实战问题集</a></li>
       <li><a href="/posts/ubuntu/system-optimization">Ubuntu 系统优化指南</a></li>
       <li><a href="/posts/ubuntu/software-installation">常用软件安装与配置</a></li>
       <li><a href="/posts/ubuntu/terminal-commands">实用终端命令集锦</a></li>
