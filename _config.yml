@@ -1,4 +1,4 @@
-title: 技术探索与分享
+title: 技术博客
 description: Android开发、嵌入式Linux和MCU的学习笔记
 author: Your Name
 theme: jekyll-theme-minimal
@@ -30,11 +30,23 @@ categories:
   - 嵌入式Linux
   - MCU
 
+# 文章集合配置
+collections:
+  posts:
+    output: true
+    permalink: /:collection/:path/
+
+# 文章路径设置
+include:
+  - posts
+
 # 导航设置
 navigation:
   - title: 首页
     url: /
   - title: 分类
     url: /categories
+  - title: 搜索
+    url: /search
   - title: 关于
     url: /about 

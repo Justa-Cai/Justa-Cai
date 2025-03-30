@@ -1,0 +1,84 @@
+---
+layout: default
+title: 搜索
+permalink: /search/
+---
+
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="输入关键词搜索...">
+    </div>
+    <div id="search-results"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js"></script>
+<script>
+SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('search-results'),
+    json: '/search.json',
+    searchResultTemplate: `
+        <div class="search-result-item">
+            <h3><a href="{url}">{title}</a></h3>
+            <p>{excerpt}</p>
+            <div class="search-meta">
+                <span>{date}</span>
+                <span>{category}</span>
+            </div>
+        </div>
+    `,
+    noResultsText: '没有找到相关结果',
+    limit: 10,
+    fuzzy: false
+});
+</script>
+
+<style>
+.search-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-result-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.search-result-item h3 {
+    margin: 0 0 10px 0;
+}
+
+.search-result-item a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.search-result-item a:hover {
+    text-decoration: underline;
+}
+
+.search-meta {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.search-meta span {
+    margin-right: 15px;
+}
+</style> 

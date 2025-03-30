@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title == '首页' %}{{ site.title }}{% else %}{{ page.title }} - {{ site.title }}{% endif %}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/prism.css' | relative_url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .search-container {
+            margin: 10px 0;
+            width: 100%;
+        }
+        .search-box {
+            display: flex;
+            width: 100%;
+        }
+        #search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e1e4e8;
+            border-radius: 24px;
+            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+        .search-results {
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .search-results.active {
+            display: block;
+        }
+        .search-result-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            transition: background 0.2s;
+        }
+        .search-result-item:hover {
+            background: #f8f9fa;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+        }
+        .search-result-item a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .search-result-item a:hover {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        .search-meta {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .search-meta span {
+            margin-right: 15px;
+        }
+        .site-header {
+            background: linear-gradient(120deg, #24556e 0%, #2c3e50 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .site-title {
+            color: white;
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+        .site-title:hover {
+            color: #ecf0f1;
+        }
+        .site-nav {
+            display: flex;
+            margin-top: 0;
+        }
+        .site-nav a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            padding: 8px 0;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .site-nav a:hover {
+            color: white;
+        }
+        .site-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #3498db;
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s;
+        }
+        .site-nav a:hover::after {
+            width: 100%;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .header-container .container {
+            width: 100%;
+        }
+        .content {
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .content p, .content h1, .content h2, .content h3, .content ul {
+            text-align: left;
+        }
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .site-nav {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .site-nav a {
+                margin-left: 0;
+                margin-right: 1rem;
+            }
+            .search-container {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-container">
+                <a href="{{ '/' | relative_url }}" class="site-title">技术博客</a>
+                <nav class="site-nav">
+                    {% for item in site.navigation %}
+                    <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                    {% endfor %}
+                </nav>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="输入关键词搜索...">
+                </div>
+                <div id="search-results" class="search-results"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        {{ content }}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchResults = document.getElementById('search-results');
+            var searchInput = document.getElementById('search-input');
+            
+            // 初始化搜索
+            SimpleJekyllSearch({
+                searchInput: searchInput,
+                resultsContainer: searchResults,
+                json: '/search.json',
+                searchResultTemplate: `
+                    <div class="search-result-item">
+                        <h3><a href="{url}">{title}</a></h3>
+                        <p>{excerpt}</p>
+                        <div class="search-meta">
+                            <span><i class="far fa-calendar-alt"></i> {date}</span>
+                            <span><i class="fas fa-folder"></i> {category}</span>
+                        </div>
+                    </div>
+                `,
+                noResultsText: '没有找到相关结果',
+                limit: 5,
+                fuzzy: false,
+                searchFields: ['title', 'content', 'excerpt', 'category', 'tags'],
+                sort: function(a, b) {
+                    return new Date(b.date) - new Date(a.date);
+                }
+            });
+
+            // 当输入框有内容时显示结果容器
+            searchInput.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    searchResults.classList.add('active');
+                } else {
+                    searchResults.classList.remove('active');
+                }
+            });
+
+            // 点击页面其他地方时隐藏结果
+            document.addEventListener('click', function(e) {
+                if (!searchResults.contains(e.target) && e.target !== searchInput) {
+                    searchResults.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

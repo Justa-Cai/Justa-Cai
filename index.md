@@ -3,33 +3,54 @@ layout: default
 title: 首页
 ---
 
-# 技术探索与分享
+<div class="category-section">
+  <h1>编程技术笔记</h1>
+  <p>欢迎访问我的技术博客，这里记录了我在编程开发道路上的学习笔记和心得体会。</p>
+</div>
 
-## 最新文章
+<div class="category-section">
+  <h2>最新文章</h2>
+  
+  <div class="card">
+    <h3>Android 开发</h3>
+    <ul class="post-list">
+      <li><a href="/posts/android/system-boot-process">Android 系统启动流程分析</a></li>
+      <li><a href="/posts/android/init-process">Android Init进程实现机制详解</a></li>
+      <li><a href="/posts/android/custom-view-practice">自定义 View 实践总结</a></li>
+      <li><a href="/posts/android/performance-optimization">Android 性能优化技巧</a></li>
+      <li><a href="/posts/android/binder-mechanism">Android Binder机制详解</a></li>
+    </ul>
+  </div>
 
-### Android 开发
-- [Android 系统启动流程分析](/posts/android/system-boot-process)
-- [Android Init进程实现机制详解](/posts/android/init-process)
-- [自定义 View 实践总结](/posts/android/custom-view-practice)
-- [Android 性能优化技巧](/posts/android/performance-optimization)
-- [Android Binder机制详解](/posts/android/binder-mechanism)
+  <div class="card">
+    <h3>嵌入式 Linux</h3>
+    <ul class="post-list">
+      <li><a href="/posts/embedded-linux/driver-development-basics">Linux 驱动开发入门</a></li>
+      <li><a href="/posts/embedded-linux/build-custom-linux">构建自己的 Linux 系统</a></li>
+      <li><a href="/posts/embedded-linux/rtos-selection">实时操作系统的选择与应用</a></li>
+    </ul>
+  </div>
 
-### 嵌入式 Linux
-- [Linux 驱动开发入门](/posts/embedded-linux/driver-development-basics)
-- [构建自己的 Linux 系统](/posts/embedded-linux/build-custom-linux)
-- [实时操作系统的选择与应用](/posts/embedded-linux/rtos-selection)
+  <div class="card">
+    <h3>MCU 软件开发</h3>
+    <ul class="post-list">
+      <li><a href="/posts/mcu/stm32-hal-basic">STM32 HAL库开发入门</a></li>
+      <li><a href="/posts/mcu/rtos-in-mcu">RTOS在MCU中的应用</a></li>
+      <li><a href="/posts/mcu/communication-protocols">MCU常用通信协议详解</a></li>
+      <li><a href="/posts/mcu/interrupt-and-timer">MCU中断处理与定时器应用</a></li>
+      <li><a href="/posts/mcu/peripheral-programming">MCU外设驱动开发指南</a></li>
+    </ul>
+  </div>
 
-### MCU 软件开发
-- [STM32 HAL库开发入门](/posts/mcu/stm32-hal-basic)
-- [RTOS在MCU中的应用](/posts/mcu/rtos-in-mcu)
-- [MCU常用通信协议详解](/posts/mcu/communication-protocols)
-- [MCU中断处理与定时器应用](/posts/mcu/interrupt-and-timer)
-- [MCU外设驱动开发指南](/posts/mcu/peripheral-programming)
-
-### 音视频开发
-- [音视频基础知识](/posts/av/basic-concepts)
-- [FFmpeg开发指南](/posts/av/ffmpeg-guide)
-- [音频编解码实践](/posts/av/audio-codec)
-- [视频编解码技术](/posts/av/video-codec)
-- [流媒体协议详解](/posts/av/streaming-protocols)
-- [Android音视频开发](/posts/av/android-av-dev) 
+  <div class="card">
+    <h3>音视频开发</h3>
+    <ul class="post-list">
+      <li><a href="/posts/av/basic-concepts">音视频基础知识</a></li>
+      <li><a href="/posts/av/ffmpeg-guide">FFmpeg开发指南</a></li>
+      <li><a href="/posts/av/audio-codec">音频编解码实践</a></li>
+      <li><a href="/posts/av/video-codec">视频编解码技术</a></li>
+      <li><a href="/posts/av/streaming-protocols">流媒体协议详解</a></li>
+      <li><a href="/posts/av/android-av-dev">Android音视频开发</a></li>
+    </ul>
+  </div>
+</div> 
