@@ -4,8 +4,10 @@
 
 ### Android 开发
 - [Android 系统启动流程分析](./posts/android/system-boot-process.md)
+- [Android Init进程实现机制详解](./posts/android/init-process.md)
 - [自定义 View 实践总结](./posts/android/custom-view-practice.md)
 - [Android 性能优化技巧](./posts/android/performance-optimization.md)
+- [Android Binder机制详解](./posts/android/binder-mechanism.md)
 
 ### 嵌入式 Linux
 - [Linux 驱动开发入门](./posts/embedded-linux/driver-development-basics.md)
