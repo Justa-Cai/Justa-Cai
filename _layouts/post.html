@@ -98,118 +98,6 @@ pre code {
         font-size: 12px;
     }
 }
-
-/* Prism.js 自定义样式 */
-pre[class*="language-"] {
-    background: #1e2127 !important;  /* 稍深的背景色 */
-    border: 1px solid #282c34;  /* 添加边框 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);  /* 添加阴影效果 */
-    border-radius: 6px;
-    margin: 1em 0;
-    padding: 1em;  /* 恢复正常内边距 */
-    overflow: auto;
-}
-
-code[class*="language-"] {
-    color: #abb2bf !important;  /* 默认文本颜色 */
-    text-shadow: none !important;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* 代码高亮颜色 - 增强版 */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-    color: #7c8a9b !important;  /* 更亮的注释颜色 */
-    font-style: italic;  /* 斜体注释 */
-}
-
-.token.punctuation {
-    color: #bfc7d5 !important;  /* 更亮的标点符号 */
-}
-
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
-    color: #ff6b6b !important;  /* 鲜艳的红色 */
-}
-
-.token.boolean,
-.token.number {
-    color: #ff9f43 !important;  /* 橙色 */
-}
-
-.token.selector,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
-    color: #2ecc71 !important;  /* 翠绿色 */
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-    color: #56b6c2 !important;  /* 青色 */
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-    color: #c678dd !important;  /* 紫色 */
-    font-style: italic;  /* 斜体关键字 */
-}
-
-.token.function {
-    color: #4bcffa !important;  /* 亮蓝色 */
-}
-
-.token.class-name {
-    color: #ffd32a !important;  /* 金黄色 */
-}
-
-.token.variable {
-    color: #ff7979 !important;  /* 浅红色 */
-}
-
-.token.regex,
-.token.important {
-    color: #ffa502 !important;  /* 暗金色 */
-}
-
-.token.important,
-.token.bold {
-    font-weight: bold;
-}
-
-.token.italic {
-    font-style: italic;
-}
-
-.token.entity {
-    cursor: help;
-}
-
-/* 特殊语言的特定样式 */
-.language-json .token.property {
-    color: #56b6c2 !important;  /* JSON属性使用青色 */
-}
-
-.language-markdown .token.title {
-    color: #ff6b6b !important;  /* Markdown标题使用红色 */
-    font-weight: bold;
-}
-
-.language-markdown .token.list {
-    color: #4bcffa !important;  /* Markdown列表使用蓝色 */
-}
 </style>
 
 <div class="back-button">
@@ -231,7 +119,7 @@ code[class*="language-"] {
 </div>
 
 <!-- Prism.js CSS -->
-<!-- 移除本地CSS，完全使用CDN -->
+<!-- 使用CDN加载Prism样式 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
 
