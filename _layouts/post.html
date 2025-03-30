@@ -193,6 +193,43 @@ pre[class*="language-"] {
     background: #282a36;
 }
 
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em;
+    /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+    user-select: none;
+}
+
+.line-numbers-rows > span {
+    display: block;
+    counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: 0.8em;
+    text-align: right;
+}
+
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
     background: #282a36;
@@ -283,6 +320,13 @@ pre[class*="language-"] {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 确保所有代码块都有line-numbers类
+    document.querySelectorAll('pre').forEach(function(preElement) {
+        if (!preElement.classList.contains('line-numbers')) {
+            preElement.classList.add('line-numbers');
+        }
+    });
+    
     // 预处理代码块内容
     document.querySelectorAll('pre code').forEach(function(codeElement) {
         // 获取代码内容
@@ -294,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var lineCount = Math.min(5, lines.length);
         
         for (var i = 0; i < lineCount; i++) {
+            if (i >= lines.length) break;
             var line = lines[i].trim();
             if (line && !line.match(/^\d+\s/)) {
                 hasLineNumbers = false;
@@ -307,13 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return line.replace(/^\s*\d+\s+/, '');
             });
             codeElement.textContent = cleanLines.join('\n');
-        }
-    });
-    
-    // 确保所有代码块都有line-numbers类
-    document.querySelectorAll('pre').forEach(function(preElement) {
-        if (!preElement.classList.contains('line-numbers')) {
-            preElement.classList.add('line-numbers');
         }
     });
     
