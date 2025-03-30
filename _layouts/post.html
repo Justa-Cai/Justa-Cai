@@ -308,6 +308,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 code.className = 'language-none ' + code.className;
             }
         }
+        
+        // 移除代码中可能的行号
+        if (code) {
+            const codeText = code.textContent;
+            if (/^\s*\d+\s+/.test(codeText)) {
+                // 查找代码中以数字开头的行，这些可能是行号
+                // 使用正则表达式找出这些模式并移除
+                let lineText = codeText.split('\n');
+                let cleanedLines = [];
+                let isNumberedCode = true;
+                
+                // 检查是否每行都以数字开头
+                for (let i = 0; i < lineText.length; i++) {
+                    if (!lineText[i].trim().match(/^\d+\s/)) {
+                        if (lineText[i].trim().length > 0) {
+                            isNumberedCode = false;
+                            break;
+                        }
+                    }
+                }
+                
+                // 如果确认是带行号的代码，移除每行的行号
+                if (isNumberedCode) {
+                    for (let i = 0; i < lineText.length; i++) {
+                        cleanedLines.push(lineText[i].replace(/^\s*\d+\s+/, ''));
+                    }
+                    code.textContent = cleanedLines.join('\n');
+                }
+            }
+        }
     });
     
     // 添加复制按钮
@@ -319,7 +349,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             copyButton.textContent = '复制';
             copyButton.onclick = () => {
                 const code = el.querySelector('code').textContent;
-                navigator.clipboard.writeText(code).then(() => {
+                // 在复制前移除代码中可能的行号
+                const cleanCode = code.split('\n')
+                                    .map(line => line.replace(/^\s*\d+\s+/, ''))
+                                    .join('\n');
+                navigator.clipboard.writeText(cleanCode).then(() => {
                     copyButton.textContent = '已复制!';
                     setTimeout(() => {
                         copyButton.textContent = '复制';
