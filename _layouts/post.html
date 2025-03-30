@@ -318,6 +318,30 @@ pre[class*="language-"] {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 
+<!-- 自定义Prism语法定义，禁用数字token -->
+<script>
+// 禁用所有语言中的数字token
+document.addEventListener('DOMContentLoaded', function() {
+    // 存储所有已加载的语言
+    var languages = Object.keys(Prism.languages);
+    
+    // 遍历每种语言并禁用number token
+    languages.forEach(function(lang) {
+        if (typeof Prism.languages[lang] === 'object') {
+            // 创建语言的副本并禁用number token
+            Prism.languages['custom_' + lang] = Object.assign({}, Prism.languages[lang]);
+            Prism.languages['custom_' + lang].number = undefined;
+            
+            // 将code块的language-xxx类替换为language-custom_xxx
+            document.querySelectorAll('code.language-' + lang).forEach(function(element) {
+                element.classList.remove('language-' + lang);
+                element.classList.add('language-custom_' + lang);
+            });
+        }
+    });
+});
+</script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 确保所有代码块都有line-numbers类
