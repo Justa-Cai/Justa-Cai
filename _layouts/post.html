@@ -106,7 +106,7 @@ pre[class*="language-"] {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);  /* 添加阴影效果 */
     border-radius: 6px;
     margin: 1em 0;
-    padding: 1em 0;  /* 修改padding，去掉左右内边距 */
+    padding: 1em;  /* 恢复正常内边距 */
     overflow: auto;
 }
 
@@ -116,44 +116,6 @@ code[class*="language-"] {
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 14px;
     line-height: 1.5;
-    padding: 0 1em;  /* 添加左右内边距 */
-}
-
-/* 行号样式 */
-.line-numbers {
-    padding-left: 3.8em !important;  /* 强制使用固定的左内边距 */
-    counter-reset: linenumber;
-    position: relative; /* 确保相对定位 */
-}
-
-.line-numbers .line-numbers-rows {
-    position: absolute;
-    pointer-events: none;
-    top: 1em;  /* 添加顶部偏移，与代码对齐 */
-    font-size: 100%;
-    left: 0;  /* 修改左侧位置 */
-    width: 3em;
-    letter-spacing: -1px;
-    border-right: 1px solid #3a3f4b;  /* 更深的分隔线 */
-    user-select: none;
-    padding: 0;  /* 移除内边距 */
-    z-index: 0; /* 确保在代码后面 */
-}
-
-.line-numbers .line-numbers-rows > span {
-    pointer-events: none;
-    display: block;
-    counter-increment: linenumber;
-    line-height: 1.5;  /* 添加行高，与代码对齐 */
-    padding: 0;  /* 移除内边距 */
-}
-
-.line-numbers .line-numbers-rows > span:before {
-    content: counter(linenumber);
-    color: #5c6370;  /* 更亮的行号颜色 */
-    display: block;
-    padding-right: 1em;
-    text-align: right;
 }
 
 /* 代码高亮颜色 - 增强版 */
@@ -269,9 +231,8 @@ code[class*="language-"] {
 </div>
 
 <!-- Prism.js CSS -->
-<!-- 将CSS加载到本地以确保稳定性 -->
-<link rel="stylesheet" href="{{ '/assets/css/prism.css' | relative_url }}">
-<!-- 添加官方行号CSS -->
+<!-- 移除本地CSS，完全使用CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
 
 <!-- Prism.js JavaScript -->
@@ -285,18 +246,9 @@ code[class*="language-"] {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-<script src="{{ '/assets/js/prism.js' | relative_url }}"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
-    // 调试信息
-    console.log('Prism.js 版本:', Prism.version);
-    console.log('行号插件状态:', Prism.plugins.lineNumbers);
-    
-    // 检查代码块
-    const codeBlocks = document.querySelectorAll('pre code');
-    console.log('找到代码块数量:', codeBlocks.length);
-    
     // 确保所有pre标签都有line-numbers类
     document.querySelectorAll('pre').forEach((pre) => {
         if (!pre.classList.contains('line-numbers')) {
@@ -309,11 +261,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             code.className = 'language-none ' + code.className;
         }
     });
-    
-    // 初始化Prism
-    if (typeof Prism !== 'undefined') {
-        Prism.highlightAll();
-    }
     
     // 添加复制按钮
     document.querySelectorAll('pre').forEach((el) => {
