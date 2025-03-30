@@ -276,6 +276,26 @@ pre.line-numbers > code {
 .token {
     background: transparent !important;
 }
+
+/* 处理代码中的多余行号 */
+code > span[class^="token number"]:first-child ~ span[class^="token number"]:nth-child(-n+30) {
+    display: none !important;
+}
+
+/* 隐藏代码中重复的行号 */
+pre code span.token.number:first-child {
+    display: none !important;
+}
+
+/* 隐藏可能的行号 */
+code span.line-numbers {
+    display: none !important;
+}
+
+/* 尝试识别和隐藏可能是行号的数字 */
+pre code > span:first-child {
+    color: #282a36 !important;
+}
 </style>
 
 <!-- Prism.js JavaScript -->
@@ -309,33 +329,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         }
         
-        // 移除代码中可能的行号
+        // 移除代码中可能的行号 - 更强大的处理
         if (code) {
             const codeText = code.textContent;
-            if (/^\s*\d+\s+/.test(codeText)) {
-                // 查找代码中以数字开头的行，这些可能是行号
-                // 使用正则表达式找出这些模式并移除
-                let lineText = codeText.split('\n');
-                let cleanedLines = [];
-                let isNumberedCode = true;
-                
-                // 检查是否每行都以数字开头
-                for (let i = 0; i < lineText.length; i++) {
-                    if (!lineText[i].trim().match(/^\d+\s/)) {
-                        if (lineText[i].trim().length > 0) {
-                            isNumberedCode = false;
-                            break;
-                        }
-                    }
+            
+            // 检查并清理代码行号
+            const lines = codeText.split('\n');
+            let cleanedLines = [];
+            let hasNumberPattern = true;
+            
+            // 检查前5行是否都符合行号模式
+            const sampleSize = Math.min(5, lines.length);
+            for (let i = 0; i < sampleSize; i++) {
+                if (lines[i].trim() && !lines[i].trim().match(/^\d+(\s+|$)/)) {
+                    hasNumberPattern = false;
+                    break;
                 }
-                
-                // 如果确认是带行号的代码，移除每行的行号
-                if (isNumberedCode) {
-                    for (let i = 0; i < lineText.length; i++) {
-                        cleanedLines.push(lineText[i].replace(/^\s*\d+\s+/, ''));
-                    }
-                    code.textContent = cleanedLines.join('\n');
+            }
+            
+            if (hasNumberPattern) {
+                // 移除每行开头的数字
+                for (let i = 0; i < lines.length; i++) {
+                    cleanedLines.push(lines[i].replace(/^\s*\d+\s+/, ''));
                 }
+                code.textContent = cleanedLines.join('\n');
             }
         }
     });
@@ -368,6 +385,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (typeof Prism !== 'undefined') {
         setTimeout(() => {
             Prism.highlightAll();
+            
+            // 在高亮后立即处理行号
+            document.querySelectorAll('pre code').forEach(codeEl => {
+                // 查找并清理可能的行号
+                const spans = codeEl.querySelectorAll('span.token.number');
+                let i = 0;
+                let isLineNumber = true;
+                
+                // 检查前几个数字token是否是行号
+                spans.forEach(span => {
+                    const value = parseInt(span.textContent);
+                    if (i < 5 && isLineNumber && value === i + 1) {
+                        // 可能是行号
+                        span.style.display = 'none';
+                    } else {
+                        isLineNumber = false;
+                    }
+                    i++;
+                });
+            });
         }, 100);
     }
 });
