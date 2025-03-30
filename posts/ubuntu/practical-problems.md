@@ -90,13 +90,13 @@ sudo pwmconfig
   # 手动加载特定模块
   sudo modprobe 模块名
 
-# 查看已加载的传感器相关模块
-lsmod | grep -E 'it87|nct6775|coretemp|asus|w83627|f71882fg'
+  # 查看已加载的传感器相关模块
+  lsmod | grep -E 'it87|nct6775|coretemp|asus|w83627|f71882fg'
 
-# 如果未加载，尝试手动加载模块（根据主板芯片组选择）
-sudo modprobe it87    # 适用于 ITE 芯片组
-sudo modprobe nct6775 # 适用于 Nuvoton 芯片组
-sudo modprobe asus_atk0110 # 适用于某些 ASUS 主板
+  # 如果未加载，尝试手动加载模块（根据主板芯片组选择）
+  sudo modprobe it87    # 适用于 ITE 芯片组
+  sudo modprobe nct6775 # 适用于 Nuvoton 芯片组
+  sudo modprobe asus_atk0110 # 适用于某些 ASUS 主板
   ```
 
 ### 1.3 双系统时间不同步问题
