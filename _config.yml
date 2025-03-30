@@ -8,14 +8,12 @@ markdown: kramdown
 kramdown:
   input: GFM
   auto_ids: true
-  syntax_highlighter: rouge
+  syntax_highlighter: prismjs
   syntax_highlighter_opts:
-    line_numbers: true
-    span:
-      line_numbers: false
     block:
       line_numbers: true
-      start_line: 1
+      wrap: true
+      inline: false
 
 # 构建配置
 permalink: /:categories/:title/
