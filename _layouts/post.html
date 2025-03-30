@@ -123,6 +123,7 @@ code[class*="language-"] {
 .line-numbers {
     padding-left: 3.8em !important;  /* 强制使用固定的左内边距 */
     counter-reset: linenumber;
+    position: relative; /* 确保相对定位 */
 }
 
 .line-numbers .line-numbers-rows {
@@ -136,6 +137,7 @@ code[class*="language-"] {
     border-right: 1px solid #3a3f4b;  /* 更深的分隔线 */
     user-select: none;
     padding: 0;  /* 移除内边距 */
+    z-index: 0; /* 确保在代码后面 */
 }
 
 .line-numbers .line-numbers-rows > span {
@@ -267,8 +269,8 @@ code[class*="language-"] {
 </div>
 
 <!-- Prism.js CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+<!-- 将CSS加载到本地以确保稳定性 -->
+<link rel="stylesheet" href="{{ '/assets/css/prism.css' | relative_url }}">
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -281,7 +283,7 @@ code[class*="language-"] {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-<script src="/assets/js/prism.js"></script>
+<script src="{{ '/assets/js/prism.js' | relative_url }}"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -293,53 +295,49 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const codeBlocks = document.querySelectorAll('pre code');
     console.log('找到代码块数量:', codeBlocks.length);
     
-    // 手动添加行号类
-    codeBlocks.forEach((block) => {
-        const pre = block.parentElement;
+    // 确保所有pre标签都有line-numbers类
+    document.querySelectorAll('pre').forEach((pre) => {
         if (!pre.classList.contains('line-numbers')) {
             pre.classList.add('line-numbers');
         }
+        
+        // 确保每个pre标签都有一个class属性来识别语言
+        const code = pre.querySelector('code');
+        if (code && code.className.indexOf('language-') === -1) {
+            code.className = 'language-none ' + code.className;
+        }
     });
     
-    codeBlocks.forEach((block, index) => {
-        console.log(`代码块 ${index + 1}:`, {
-            '类名': block.className,
-            '父元素类名': block.parentElement.className,
-            '是否有行号类': block.parentElement.classList.contains('line-numbers')
-        });
-    });
-
-    // 初始化代码高亮
-    Prism.highlightAll();
-    
-    // 对已高亮的代码块再次应用行号
-    if (typeof Prism.plugins.lineNumbers !== 'undefined') {
-        document.querySelectorAll('pre.line-numbers').forEach((pre) => {
-            // 只有当pre元素中没有行号容器时才添加
-            if (!pre.querySelector('.line-numbers-rows')) {
-                // 创建行号行容器
-                const linesWrapper = document.createElement('span');
-                linesWrapper.className = 'line-numbers-rows';
-                
-                // 计算行数
-                const code = pre.querySelector('code');
-                const match = code.textContent.match(/\n(?!$)/g);
-                const linesNum = match ? match.length + 1 : 1;
-                
-                // 创建行号
-                let lines = '';
-                for (let i = 0; i < linesNum; i++) {
-                    lines += '<span></span>';
-                }
-                
-                linesWrapper.innerHTML = lines;
-                pre.appendChild(linesWrapper);
-            }
-        });
+    // 重新初始化Prism
+    if (typeof Prism !== 'undefined') {
+        Prism.highlightAll();
     }
     
-    // 再次检查代码块
-    console.log('高亮后的代码块:', document.querySelectorAll('pre code'));
+    // 手动添加行号 - GitHub Pages兼容版本
+    document.querySelectorAll('pre.line-numbers').forEach((pre) => {
+        if (!pre.querySelector('.line-numbers-rows')) {
+            // 计算行数
+            const code = pre.querySelector('code');
+            if (!code) return;
+            
+            const text = code.textContent;
+            const lines = text.split('\n');
+            const lineCount = lines.length;
+            
+            // 创建行号容器
+            const lineNumbersWrapper = document.createElement('span');
+            lineNumbersWrapper.className = 'line-numbers-rows';
+            
+            // 添加行号
+            let lineNumbersHTML = '';
+            for (let i = 0; i < lineCount; i++) {
+                lineNumbersHTML += '<span></span>';
+            }
+            
+            lineNumbersWrapper.innerHTML = lineNumbersHTML;
+            pre.appendChild(lineNumbersWrapper);
+        }
+    });
     
     // 添加复制按钮
     document.querySelectorAll('pre').forEach((el) => {
