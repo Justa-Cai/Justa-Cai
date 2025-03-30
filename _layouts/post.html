@@ -237,6 +237,53 @@ pre[class*="language-"] {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
 
+<!-- 确保完全禁用行号插件 -->
+<script>
+// 阻止line-numbers插件运行
+Prism.plugins.lineNumbers = {
+  getLine: function() { return null; },
+  resize: function() {},
+  assumeViewportIndependence: false
+};
+
+// 移除可能已经添加的行号相关class
+document.addEventListener('DOMContentLoaded', function() {
+  // 移除所有line-numbers class
+  document.querySelectorAll('.line-numbers').forEach(function(element) {
+    element.classList.remove('line-numbers');
+  });
+  
+  // 移除所有line-numbers-rows元素
+  document.querySelectorAll('.line-numbers-rows').forEach(function(element) {
+    element.remove();
+  });
+  
+  // 处理动态添加的元素
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
+        if (node.nodeType === 1) { // 元素节点
+          // 移除新添加元素中的line-numbers
+          if (node.classList && node.classList.contains('line-numbers')) {
+            node.classList.remove('line-numbers');
+          }
+          
+          // 移除新添加元素中的line-numbers-rows
+          if (node.querySelector) {
+            node.querySelectorAll('.line-numbers-rows').forEach(function(el) {
+              el.remove();
+            });
+          }
+        }
+      });
+    });
+  });
+  
+  // 观察文档变化
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+
 <!-- 自定义Prism语法定义，禁用数字token -->
 <script>
 // 禁用所有语言中的数字token

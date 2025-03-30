@@ -10,12 +10,7 @@ kramdown:
   syntax_highlighter: prismjs
   syntax_highlighter_opts:
     block:
-      line_numbers: true
-      line_number_start: 1
-      line_number_step: 1
-      line_number_prefix: ''
-      line_number_suffix: ''
-      class: 'line-numbers'
+      line_numbers: false
       wrap: true
       inline: false
 
