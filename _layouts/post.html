@@ -100,48 +100,6 @@ pre code {
         font-size: 12px;
     }
 }
-
-/* 行号样式 */
-pre.line-numbers {
-    position: relative;
-    padding-left: 3.8em;
-    counter-reset: linenumber;
-    white-space: pre;
-}
-
-pre.line-numbers > code {
-    white-space: inherit;
-    position: relative;
-    z-index: 1;
-}
-
-.line-numbers .line-numbers-rows {
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    left: -3.8em;
-    width: 3em;
-    font-size: 100%;
-    letter-spacing: -1px;
-    border-right: 1px solid #44475a;
-    user-select: none;
-    height: 100%;
-    z-index: 0;
-}
-
-.line-numbers-rows > span {
-    pointer-events: none;
-    display: block;
-    counter-increment: linenumber;
-}
-
-.line-numbers-rows > span:before {
-    content: counter(linenumber);
-    color: #6272a4;
-    display: block;
-    padding-right: 0.8em;
-    text-align: right;
-}
 </style>
 
 <div class="back-button">
@@ -162,9 +120,8 @@ pre.line-numbers > code {
   <a href="javascript:history.back()" class="btn">← 返回</a>
 </div>
 
-<!-- Prism.js 主题和行号插件 -->
+<!-- Prism.js 主题 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css"> -->
 
 <!-- Dracula 主题覆盖样式 -->
 <style>
@@ -191,43 +148,6 @@ pre[class*="language-"] {
     overflow: auto;
     border-radius: 0.3em;
     background: #282a36;
-}
-
-pre[class*="language-"].line-numbers {
-    position: relative;
-    padding-left: 3.8em;
-    counter-reset: linenumber;
-}
-
-pre[class*="language-"].line-numbers > code {
-    position: relative;
-    white-space: inherit;
-}
-
-.line-numbers .line-numbers-rows {
-    position: absolute;
-    pointer-events: none;
-    top: 0;
-    font-size: 100%;
-    left: -3.8em;
-    width: 3em;
-    /* works for line-numbers below 1000 lines */
-    letter-spacing: -1px;
-    border-right: 1px solid #999;
-    user-select: none;
-}
-
-.line-numbers-rows > span {
-    display: block;
-    counter-increment: linenumber;
-}
-
-.line-numbers-rows > span:before {
-    content: counter(linenumber);
-    color: #999;
-    display: block;
-    padding-right: 0.8em;
-    text-align: right;
 }
 
 :not(pre) > code[class*="language-"],
@@ -316,7 +236,6 @@ pre[class*="language-"] {
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-cpp.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script> -->
 
 <!-- 自定义Prism语法定义，禁用数字token -->
 <script>
@@ -344,13 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 确保所有代码块都有line-numbers类
-    document.querySelectorAll('pre').forEach(function(preElement) {
-        if (!preElement.classList.contains('line-numbers')) {
-            preElement.classList.add('line-numbers');
-        }
-    });
-    
     // 预处理代码块内容
     document.querySelectorAll('pre code').forEach(function(codeElement) {
         // 获取代码内容
