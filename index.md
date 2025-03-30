@@ -53,4 +53,15 @@ title: 首页
       <li><a href="/posts/av/android-av-dev">Android音视频开发</a></li>
     </ul>
   </div>
+
+  <div class="card">
+    <h3>Ubuntu 使用技巧</h3>
+    <ul class="post-list">
+      <li><a href="/posts/ubuntu/system-optimization">Ubuntu 系统优化指南</a></li>
+      <li><a href="/posts/ubuntu/software-installation">常用软件安装与配置</a></li>
+      <li><a href="/posts/ubuntu/terminal-commands">实用终端命令集锦</a></li>
+      <li><a href="/posts/ubuntu/desktop-customization">桌面环境自定义技巧</a></li>
+      <li><a href="/posts/ubuntu/troubleshooting">常见问题排查与解决</a></li>
+    </ul>
+  </div>
 </div> 
