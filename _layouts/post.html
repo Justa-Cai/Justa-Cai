@@ -284,34 +284,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 预处理代码块内容
+    // 为代码块的pre父元素添加line-numbers类
     document.querySelectorAll('pre code').forEach(function(codeElement) {
-        // 获取代码内容
-        var content = codeElement.textContent;
-        
-        // 检查是否包含行号（前几行都以数字开头）
-        var lines = content.split('\n');
-        var hasLineNumbers = true;
-        var lineCount = Math.min(5, lines.length);
-        
-        for (var i = 0; i < lineCount; i++) {
-            if (i >= lines.length) break;
-            var line = lines[i].trim();
-            if (line && !line.match(/^\d+\s/)) {
-                hasLineNumbers = false;
-                break;
-            }
-        }
-        
-        // 如果包含行号，移除它们
-        if (hasLineNumbers) {
-            var cleanLines = lines.map(function(line) {
-                return line.replace(/^\s*\d+\s+/, '');
-            });
-            codeElement.textContent = cleanLines.join('\n');
-        }
-        
-        // 为代码块的pre父元素添加line-numbers类
         var preElement = codeElement.parentElement;
         if (preElement && preElement.tagName === 'PRE') {
             preElement.classList.add('line-numbers');
