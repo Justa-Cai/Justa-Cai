@@ -5,7 +5,7 @@ layout: null
   {% for post in site.posts %}
     {
       "title"    : {{ post.title | jsonify }},
-      "category" : {{ post.category | default: "未分类" | jsonify }},
+      "category" : {{ post.categories | first | default: "未分类" | jsonify }},
       "tags"     : {{ post.tags | jsonify }},
       "url"      : {{ post.url | relative_url | jsonify }},
       "date"     : {{ post.date | date: "%Y-%m-%d" | jsonify }},
@@ -19,8 +19,10 @@ layout: null
     {% unless forloop.first %},{% endunless %}
     {
       "title"    : {{ item.title | jsonify }},
-      "category" : "页面",
+      "category" : "文档",
       "url"      : {{ item.url | relative_url | jsonify }},
+      "date"     : {{ site.time | date: "%Y-%m-%d" | jsonify }},
+      "excerpt"  : {{ item.content | strip_html | strip_newlines | truncate: 160 | jsonify }},
       "content"  : {{ item.content | strip_html | strip_newlines | escape | jsonify }}
     }
   {% endif %}
