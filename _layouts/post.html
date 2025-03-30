@@ -271,6 +271,8 @@ code[class*="language-"] {
 <!-- Prism.js CSS -->
 <!-- 将CSS加载到本地以确保稳定性 -->
 <link rel="stylesheet" href="{{ '/assets/css/prism.css' | relative_url }}">
+<!-- 添加官方行号CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -308,36 +310,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
     
-    // 重新初始化Prism
+    // 初始化Prism
     if (typeof Prism !== 'undefined') {
         Prism.highlightAll();
     }
-    
-    // 手动添加行号 - GitHub Pages兼容版本
-    document.querySelectorAll('pre.line-numbers').forEach((pre) => {
-        if (!pre.querySelector('.line-numbers-rows')) {
-            // 计算行数
-            const code = pre.querySelector('code');
-            if (!code) return;
-            
-            const text = code.textContent;
-            const lines = text.split('\n');
-            const lineCount = lines.length;
-            
-            // 创建行号容器
-            const lineNumbersWrapper = document.createElement('span');
-            lineNumbersWrapper.className = 'line-numbers-rows';
-            
-            // 添加行号
-            let lineNumbersHTML = '';
-            for (let i = 0; i < lineCount; i++) {
-                lineNumbersHTML += '<span></span>';
-            }
-            
-            lineNumbersWrapper.innerHTML = lineNumbersHTML;
-            pre.appendChild(lineNumbersWrapper);
-        }
-    });
     
     // 添加复制按钮
     document.querySelectorAll('pre').forEach((el) => {
