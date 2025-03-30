@@ -60,5 +60,5 @@ Prism.plugins.lineNumbers = {
 console.log('Prism.js 配置已加载');
 console.log('行号插件配置:', Prism.plugins.lineNumbers);
 
-// 手动初始化行号插件
-Prism.plugins.lineNumbers.init();
+// 不要手动初始化行号插件，因为prism-line-numbers.min.js已经提供了初始化功能
+// Prism.plugins.lineNumbers.init(); // 移除这行代码，它导致了错误

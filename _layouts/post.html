@@ -272,7 +272,6 @@ code[class*="language-"] {
 
 <!-- Prism.js JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
@@ -313,24 +312,53 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // 初始化代码高亮
     Prism.highlightAll();
     
+    // 对已高亮的代码块再次应用行号
+    if (typeof Prism.plugins.lineNumbers !== 'undefined') {
+        document.querySelectorAll('pre.line-numbers').forEach((pre) => {
+            // 只有当pre元素中没有行号容器时才添加
+            if (!pre.querySelector('.line-numbers-rows')) {
+                // 创建行号行容器
+                const linesWrapper = document.createElement('span');
+                linesWrapper.className = 'line-numbers-rows';
+                
+                // 计算行数
+                const code = pre.querySelector('code');
+                const match = code.textContent.match(/\n(?!$)/g);
+                const linesNum = match ? match.length + 1 : 1;
+                
+                // 创建行号
+                let lines = '';
+                for (let i = 0; i < linesNum; i++) {
+                    lines += '<span></span>';
+                }
+                
+                linesWrapper.innerHTML = lines;
+                pre.appendChild(linesWrapper);
+            }
+        });
+    }
+    
     // 再次检查代码块
     console.log('高亮后的代码块:', document.querySelectorAll('pre code'));
     
     // 添加复制按钮
     document.querySelectorAll('pre').forEach((el) => {
-        const copyButton = document.createElement('button');
-        copyButton.className = 'copy-button';
-        copyButton.textContent = '复制';
-        copyButton.onclick = () => {
-            const code = el.querySelector('code').textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                copyButton.textContent = '已复制!';
-                setTimeout(() => {
-                    copyButton.textContent = '复制';
-                }, 2000);
-            });
-        };
-        el.appendChild(copyButton);
+        // 确保每个pre元素只有一个复制按钮
+        if (!el.querySelector('.copy-button')) {
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            copyButton.textContent = '复制';
+            copyButton.onclick = () => {
+                const code = el.querySelector('code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyButton.textContent = '已复制!';
+                    setTimeout(() => {
+                        copyButton.textContent = '复制';
+                    }, 2000);
+                });
+            };
+            el.appendChild(copyButton);
+        }
     });
 });
 </script> 
