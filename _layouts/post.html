@@ -272,29 +272,9 @@ pre.line-numbers > code {
     text-align: right;
 }
 
-/* 确保每个token正确处理 */
-.token {
-    background: transparent !important;
-}
-
-/* 处理代码中的多余行号 */
-code > span[class^="token number"]:first-child ~ span[class^="token number"]:nth-child(-n+30) {
+/* 处理被识别为行号的数字token */
+.token.number.line-number-token {
     display: none !important;
-}
-
-/* 隐藏代码中重复的行号 */
-pre code span.token.number:first-child {
-    display: none !important;
-}
-
-/* 隐藏可能的行号 */
-code span.line-numbers {
-    display: none !important;
-}
-
-/* 尝试识别和隐藏可能是行号的数字 */
-pre code > span:first-child {
-    color: #282a36 !important;
 }
 </style>
 
@@ -329,30 +309,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         }
         
-        // 移除代码中可能的行号 - 更强大的处理
+        // 处理可能包含行号的代码
         if (code) {
             const codeText = code.textContent;
-            
-            // 检查并清理代码行号
             const lines = codeText.split('\n');
-            let cleanedLines = [];
-            let hasNumberPattern = true;
             
-            // 检查前5行是否都符合行号模式
-            const sampleSize = Math.min(5, lines.length);
-            for (let i = 0; i < sampleSize; i++) {
-                if (lines[i].trim() && !lines[i].trim().match(/^\d+(\s+|$)/)) {
-                    hasNumberPattern = false;
+            // 识别代码是否有行号模式，即一系列连续的数字开头
+            let hasLineNumbers = true;
+            const lineCount = Math.min(5, lines.length);
+            
+            for (let i = 0; i < lineCount; i++) {
+                const trimmedLine = lines[i].trim();
+                if (trimmedLine && !trimmedLine.match(/^\d+(\s+|$)/)) {
+                    hasLineNumbers = false;
                     break;
                 }
             }
             
-            if (hasNumberPattern) {
-                // 移除每行开头的数字
-                for (let i = 0; i < lines.length; i++) {
-                    cleanedLines.push(lines[i].replace(/^\s*\d+\s+/, ''));
-                }
-                code.textContent = cleanedLines.join('\n');
+            if (hasLineNumbers) {
+                // 如果确认有行号模式，在代码元素上添加标记
+                code.setAttribute('data-has-line-numbers', 'true');
             }
         }
     });
@@ -365,12 +341,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
             copyButton.className = 'copy-button';
             copyButton.textContent = '复制';
             copyButton.onclick = () => {
-                const code = el.querySelector('code').textContent;
-                // 在复制前移除代码中可能的行号
-                const cleanCode = code.split('\n')
-                                    .map(line => line.replace(/^\s*\d+\s+/, ''))
-                                    .join('\n');
-                navigator.clipboard.writeText(cleanCode).then(() => {
+                const code = el.querySelector('code');
+                let text = code.textContent;
+                
+                // 如果代码包含行号，移除它们
+                if (code.hasAttribute('data-has-line-numbers')) {
+                    text = text.split('\n')
+                               .map(line => line.replace(/^\s*\d+\s+/, ''))
+                               .join('\n');
+                }
+                
+                navigator.clipboard.writeText(text).then(() => {
                     copyButton.textContent = '已复制!';
                     setTimeout(() => {
                         copyButton.textContent = '复制';
@@ -381,31 +362,71 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
     
-    // 重新初始化Prism
+    // 为每个数字表示的token添加处理，确保只有实际代码中的数字被高亮
     if (typeof Prism !== 'undefined') {
-        setTimeout(() => {
-            Prism.highlightAll();
-            
-            // 在高亮后立即处理行号
-            document.querySelectorAll('pre code').forEach(codeEl => {
-                // 查找并清理可能的行号
-                const spans = codeEl.querySelectorAll('span.token.number');
-                let i = 0;
-                let isLineNumber = true;
-                
-                // 检查前几个数字token是否是行号
-                spans.forEach(span => {
-                    const value = parseInt(span.textContent);
-                    if (i < 5 && isLineNumber && value === i + 1) {
-                        // 可能是行号
-                        span.style.display = 'none';
-                    } else {
-                        isLineNumber = false;
+        // 监听Prism完成高亮的事件
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                // 处理每个代码块中的行号
+                document.querySelectorAll('code[data-has-line-numbers="true"]').forEach(function(codeElement) {
+                    // 获取所有数字token
+                    const numberTokens = codeElement.querySelectorAll('.token.number');
+                    let currentLine = 1;
+                    
+                    // 处理每一行
+                    const codeLines = codeElement.textContent.split('\n');
+                    for (let i = 0; i < codeLines.length; i++) {
+                        // 标记每行开头的数字token
+                        numberTokens.forEach(function(token) {
+                            // 检查token是否在当前行的开始位置
+                            const tokenText = token.textContent.trim();
+                            const lineText = codeLines[i].trim();
+                            
+                            if (lineText.startsWith(tokenText) && parseInt(tokenText) === currentLine) {
+                                // 这是行号，隐藏它
+                                token.classList.add('line-number-token');
+                            }
+                        });
+                        
+                        currentLine++;
                     }
-                    i++;
                 });
-            });
-        }, 100);
+            }, 200);
+        });
+        
+        // 自定义Prism的number token处理
+        Prism.hooks.add('wrap', function(env) {
+            if (env.type === 'number' && env.element.parentElement && env.element.parentElement.hasAttribute('data-has-line-numbers')) {
+                // 检查当前数字是否可能是行号
+                const value = parseInt(env.content);
+                
+                // 获取当前数字在代码中的位置
+                const tokens = Array.from(env.element.parentElement.querySelectorAll('.token'));
+                const tokenIndex = tokens.indexOf(env.element);
+                
+                // 检查这个数字是否在行首
+                const currentLineTokens = [];
+                let lineStartIndex = tokenIndex;
+                
+                // 向前查找换行或代码开始
+                for (let i = tokenIndex - 1; i >= 0; i--) {
+                    if (tokens[i].textContent.includes('\n')) {
+                        lineStartIndex = i + 1;
+                        break;
+                    }
+                    if (i === 0) {
+                        lineStartIndex = 0;
+                        break;
+                    }
+                }
+                
+                // 如果这个数字token是当前行的第一个或第二个token，并且值小于50(合理的行号范围)
+                if ((tokenIndex === lineStartIndex || tokenIndex === lineStartIndex + 1) && value <= 50) {
+                    // 标记为行号
+                    env.classes.push('line-number-token');
+                }
+            }
+        });
     }
 });
 </script> 
